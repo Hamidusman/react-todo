@@ -33,7 +33,7 @@ function Todo(){
     }
     function moveTaskDown(index){
 
-        if (index > tasks.length - 1) {
+        if (index < tasks.length - 1) {
             const Update = [...tasks];
             [Update[index], Update[index + 1]] =
             [Update[index + 1], Update[index]];
