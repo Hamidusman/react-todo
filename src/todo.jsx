@@ -1,17 +1,19 @@
 import React, {useState} from "react"
 
-function Todo(){
-    const [tasks, setTasks] = useState(['kk']);
+function Todo() {
+    const [tasks, setTasks] = useState([]);
     const [newTask, setNewTask] = useState('');
-    
+
     function handleTasks(event) {
         setNewTask(event.target.value);
 
     }
 
     function newTaskInput() {
-        setTasks([...tasks, newTask]);
-        setNewTask('');
+        if (newTask.trim()) {
+            setTasks([...tasks, { text: newTask, completed: false }]);
+            setNewTask('');
+        }
     }
 
     function deleteTask(index){
@@ -19,20 +21,14 @@ function Todo(){
 
     }
 
-    function moveTaskUp(index){
+    const toggleComplete = (index) => {
+        const updatedTasks = tasks.map((task, i) => 
+            i === index ? { ...task, completed: !task.completed } : task
+        );
+        setTasks(updatedTasks);
+    };
 
-        if (index > 0) {
-            const Update = [...tasks];
-            [Update[index], Update[index - 1]] =
-            [Update[index - 1], Update[index]];
-            setTasks(Update);
-        }
-        
-
-        
-    }
-    function moveTaskDown(index){
-
+    function moveTaskDown(index) {
         if (index < tasks.length - 1) {
             const Update = [...tasks];
             [Update[index], Update[index + 1]] =
@@ -45,24 +41,26 @@ function Todo(){
 
 
     return (
-        <div>
-            <input type="text" value={newTask} onChange={handleTasks}/>
+        <div className="container">
+            <input className="task-input" type="text" value={newTask} onChange={handleTasks} />
             <button className="add-button" onClick={newTaskInput}>Add</button>
-            <ul>
-                {tasks.map((task, index) => {
-                    return (
-                        <li key={index}>
-                            {task}
-                            <button onClick={() => moveTaskUp(index)}>Up</button>
-                            <button onClick={() => moveTaskDown(index)}>Down</button>
-                            <button onClick={() => deleteTask(index)}>Delete</button>
-                        </li>
-                    )
-                })}
-            </ul>
+            
+            {tasks.map((task, index) => (
+                <div className="item" key={index}>
+                    <p
+                        onClick={() => toggleComplete(index)}
+                        style={{ textDecoration: task.completed ? 'line-through' : 'none', cursor: 'pointer' }}
+                    >
+                        {task.text}
+                    </p>
+                    <div>
+                        <button className="mod" onClick={() => moveTaskDown(index)}>Down</button>
+                        <button className="mod" onClick={() => deleteTask(index)}>Delete</button>
+                    </div>
+                </div>
+            ))}
         </div>
-    )
-
+    );
 }
 
-export default Todo
+export default Todo;
