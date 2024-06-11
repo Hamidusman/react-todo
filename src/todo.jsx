@@ -28,34 +28,38 @@ function Todo() {
         setTasks(updatedTasks);
     };
 
-    function moveTaskDown(index) {
-        if (index < tasks.length - 1) {
+/*
+    function moveTaskUp(index) {
+        if (index > 0) {
             const Update = [...tasks];
-            [Update[index], Update[index + 1]] =
-            [Update[index + 1], Update[index]];
+            [Update[index], Update[index - 1]] =
+            [Update[index - 1], Update[index]];
             setTasks(Update);
         }
 
     }
 
 
+*/
+
 
     return (
         <div className="container">
+            <h1>Todo App</h1>
+            <p className="des">It's hedious. It works!</p>
             <input className="task-input" type="text" value={newTask} onChange={handleTasks} />
             <button className="add-button" onClick={newTaskInput}>Add</button>
             
             {tasks.map((task, index) => (
                 <div className="item" key={index}>
                     <p
-                        onClick={() => toggleComplete(index)}
                         style={{ textDecoration: task.completed ? 'line-through' : 'none', cursor: 'pointer' }}
                     >
                         {task.text}
                     </p>
                     <div>
-                        <button className="mod" onClick={() => moveTaskDown(index)}>Down</button>
-                        <button className="mod" onClick={() => deleteTask(index)}>Delete</button>
+                        <button className="mod" onClick={() => toggleComplete(index)}>D</button>
+                        <button className="mod" onClick={() => deleteTask(index)}>D</button>
                     </div>
                 </div>
             ))}
